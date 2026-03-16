@@ -30,14 +30,14 @@
 
     /* ── Masthead ── */
     .masthead {
-      border-bottom: 3px double var(--ink);
-      padding: 2rem 0 1rem;
+      border-bottom: 1px solid var(--rule);
+      padding: 1.2rem 0 0.8rem;
       text-align: center;
       background: var(--paper);
     }
     .masthead-eyebrow {
       font-family: 'DM Mono', monospace;
-      font-size: 0.65rem;
+      font-size: 0.9rem;
       letter-spacing: 0.25em;
       text-transform: uppercase;
       color: var(--muted);
@@ -45,17 +45,22 @@
     }
     .masthead-title {
       font-family: 'Playfair Display', serif;
-      font-size: clamp(3rem, 6vw, 7rem);
+      font-size: clamp(2.5rem, 5vw, 5.5rem);
       font-weight: 900;
       line-height: 0.95;
       letter-spacing: -0.02em;
       color: var(--ink);
     }
     .masthead-title span { color: var(--accent); }
+    .masthead-desc {
+      margin: 1.4rem 0 1.8rem; font-family: 'DM Sans', sans-serif;
+      font-size: 1rem; color: var(--ink); font-weight: 300; letter-spacing: 0.01em;
+    }
+    .masthead-desc strong { font-weight: 700; }
     .masthead-subtitle {
-      margin-top: 2rem;
+      margin-top: 1.2rem;
       font-family: 'DM Mono', monospace;
-      font-size: 0.65rem;
+      font-size: 0.9rem;
       letter-spacing: 0.18em;
       text-transform: uppercase;
       color: var(--muted);
@@ -64,7 +69,7 @@
     /* ── Calendar wrapper ── */
     .cal-wrap {
       max-width: 1400px;
-      margin: 3rem auto 5rem;
+      margin: 1.5rem auto 5rem;
       padding: 0 2.5rem;
     }
 
@@ -73,21 +78,21 @@
       display: flex;
       align-items: center;
       justify-content: space-between;
-      margin-bottom: 1.5rem;
+      margin-bottom: 2rem;
     }
     .cal-nav {
       display: flex;
       align-items: center;
-      gap: 0.6rem;
+      gap: 0.9rem;
     }
     .cal-nav-btn {
       background: none;
       border: 1px solid var(--rule);
       border-radius: 4px;
-      width: 2rem;
-      height: 2rem;
+      width: 2.8rem;
+      height: 2.8rem;
       cursor: pointer;
-      font-size: 0.85rem;
+      font-size: 1.2rem;
       color: var(--ink);
       display: flex;
       align-items: center;
@@ -97,7 +102,7 @@
     .cal-nav-btn:hover { border-color: var(--ink); }
     .cal-month-label {
       font-family: 'Playfair Display', serif;
-      font-size: 1.4rem;
+      font-size: 2rem;
       font-weight: 700;
       letter-spacing: -0.01em;
     }
@@ -105,9 +110,9 @@
       background: none;
       border: 1px solid var(--rule);
       border-radius: 4px;
-      padding: 0.3rem 0.8rem;
+      padding: 0.45rem 1.1rem;
       font-family: 'DM Mono', monospace;
-      font-size: 0.65rem;
+      font-size: 0.85rem;
       letter-spacing: 0.12em;
       text-transform: uppercase;
       color: var(--accent);
@@ -121,7 +126,7 @@
       align-items: center;
       gap: 0.5rem;
       font-family: 'DM Mono', monospace;
-      font-size: 0.65rem;
+      font-size: 0.85rem;
       letter-spacing: 0.1em;
       text-transform: uppercase;
       color: var(--muted);
@@ -131,7 +136,7 @@
       border-radius: 4px;
       background: var(--paper);
       font-family: 'DM Mono', monospace;
-      font-size: 0.65rem;
+      font-size: 0.85rem;
       letter-spacing: 0.08em;
       color: var(--ink);
       padding: 0.3rem 0.6rem;
@@ -306,8 +311,8 @@
 <!-- ── Masthead ── -->
 <header class="masthead">
   <div class="masthead-eyebrow">Curated Intelligence</div>
-  <div class="masthead-title">AI Weekly<br><span>Signal</span></div>
-  <div class="masthead-subtitle">Weekly Archive &nbsp;◆&nbsp; Every Friday</div>
+  <div class="masthead-title">AI Weekly <span>Signal</span></div>
+  <div class="masthead-desc">Welcome to your <strong>weekly news page on AI</strong> in the 5 largest industries</div>
 </header>
 
 <!-- ── Calendar ── -->
