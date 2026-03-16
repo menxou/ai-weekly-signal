@@ -509,17 +509,29 @@
         <label class="field-label">URL</label>
         <input class="field-input" id="f-url" type="text">
       </div>
+      <div class="field-group">
+        <label class="field-label">Short title (for calendar)</label>
+        <input class="field-input" id="f-short-title" type="text" placeholder="">
+      </div>
+      <div class="field-group">
+        <label class="field-label">News date (YYYY-MM-DD)</label>
+        <input class="field-input" id="f-news-date" type="date">
+      </div>
     `;
-    body.querySelector('#f-tag').value      = item.tag      || '';
-    body.querySelector('#f-headline').value = item.headline || '';
-    body.querySelector('#f-desc').value     = item.desc     || '';
-    body.querySelector('#f-url').value      = item.url      || '';
+    body.querySelector('#f-tag').value       = item.tag       || '';
+    body.querySelector('#f-headline').value  = item.headline  || '';
+    body.querySelector('#f-desc').value      = item.desc      || '';
+    body.querySelector('#f-url').value         = item.url         || '';
+    body.querySelector('#f-short-title').value = item.short_title || '';
+    body.querySelector('#f-news-date').value   = item.news_date   || '';
     saveCallback = () => {
       const updated = JSON.parse(JSON.stringify(currentData));
-      updated.news[i].tag      = document.getElementById('f-tag').value.trim();
-      updated.news[i].headline = document.getElementById('f-headline').value.trim();
-      updated.news[i].desc     = document.getElementById('f-desc').value.trim();
-      updated.news[i].url      = document.getElementById('f-url').value.trim();
+      updated.news[i].tag       = document.getElementById('f-tag').value.trim();
+      updated.news[i].headline  = document.getElementById('f-headline').value.trim();
+      updated.news[i].desc      = document.getElementById('f-desc').value.trim();
+      updated.news[i].url         = document.getElementById('f-url').value.trim();
+      updated.news[i].short_title = document.getElementById('f-short-title').value.trim();
+      updated.news[i].news_date   = document.getElementById('f-news-date').value.trim();
       return updated;
     };
     showModal(true);
