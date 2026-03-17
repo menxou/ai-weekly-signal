@@ -3,22 +3,17 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>AI Weekly Signal — Calendar</title>
+  <title>AI Weekly Signal — Monthly View</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Mono:wght@400;500&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
   <style>
     :root {
       --ink: #0e0e0e;
-      --paper: #f5f0e8;
+      --paper: #f7f4ee;
       --accent: #c0392b;
       --muted: #7a7060;
       --rule: #d4cfc5;
-      --green: #6bbf72;
-      --green-hover: #52a859;
-      --purple: #7c3aed;
-      --purple-hover: #6d28d9;
     }
-
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     body {
@@ -30,188 +25,76 @@
 
     /* ── Masthead ── */
     .masthead {
-      border-bottom: none;
-      padding: 1.5rem 0 0.8rem;
       text-align: center;
-      background: var(--paper);
+      padding: 2rem 0 1.5rem;
+      border-bottom: 1px solid var(--rule);
+    }
+    .masthead-eyebrow {
+      font-family: 'DM Mono', monospace; font-size: 0.9rem;
+      letter-spacing: 0.25em; text-transform: uppercase;
+      color: var(--muted); margin-bottom: 0.5rem;
     }
     .masthead-title {
       font-family: 'Playfair Display', serif;
       font-size: clamp(2.5rem, 6vw, 5.5rem);
-      font-weight: 900;
-      line-height: 0.95;
-      letter-spacing: -0.02em;
-      color: var(--ink);
+      font-weight: 900; line-height: 0.95;
+      letter-spacing: -0.02em; color: var(--ink);
     }
+    .masthead-title span { color: var(--accent); }
+    .masthead-desc {
+      margin: 1.4rem 0 0; font-family: 'DM Sans', sans-serif;
+      font-size: 1rem; color: var(--ink); font-weight: 300;
+    }
+    .masthead-desc strong { font-weight: 700; }
 
-    /* ── Calendar wrapper ── */
-    .cal-wrap {
-      max-width: 1400px;
-      margin: 1.5rem auto 5rem;
-      padding: 0 2.5rem;
+    /* ── Month toolbar ── */
+    .month-toolbar {
+      display: flex; align-items: center;
+      width: 90%; margin: 1.5rem auto 0; padding-bottom: 1.5rem; padding-right: 4.5rem;
     }
-
-    /* ── Calendar toolbar ── */
-    .cal-toolbar {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      margin-bottom: 2rem;
+    .month-nav { display: flex; align-items: center; gap: 0.9rem; }
+    .month-nav-btn {
+      background: none; border: 1px solid var(--rule); border-radius: 4px;
+      width: 2.8rem; height: 2.8rem; cursor: pointer; font-size: 1.2rem;
+      color: var(--ink); display: flex; align-items: center; justify-content: center;
+      transition: border-color 0.15s;
     }
-    .cal-nav {
-      display: flex;
-      align-items: center;
-      gap: 0.9rem;
+    .month-nav-btn:hover { border-color: var(--ink); }
+    .month-label {
+      font-family: 'Playfair Display', serif; font-size: 2rem;
+      font-weight: 700; letter-spacing: -0.01em;
     }
-    .cal-nav-btn {
-      background: none;
-      border: 1px solid var(--rule);
-      border-radius: 4px;
-      width: 2.8rem;
-      height: 2.8rem;
-      cursor: pointer;
-      font-size: 1.2rem;
-      color: var(--ink);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      transition: border-color 0.15s, color 0.15s;
-    }
-    .cal-nav-btn:hover { border-color: var(--ink); }
-    .cal-month-label {
-      font-family: 'Playfair Display', serif;
-      font-size: 2rem;
-      font-weight: 700;
-      letter-spacing: -0.01em;
-    }
-    .cal-today-btn {
-      background: none;
-      border: 1px solid var(--rule);
-      border-radius: 4px;
-      padding: 0.45rem 1.1rem;
-      font-family: 'DM Mono', monospace;
-      font-size: 0.85rem;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-      color: var(--accent);
-      cursor: pointer;
-      transition: border-color 0.15s, background 0.15s;
-    }
-    .cal-today-btn:hover { border-color: var(--accent); background: rgba(192,57,43,0.05); }
-    .monthly-view-btn {
-      border: 1px solid var(--rule); border-radius: 4px;
+    .month-today-btn {
+      background: none; border: 1px solid var(--rule); border-radius: 4px;
       padding: 0.45rem 1.1rem; font-family: 'DM Mono', monospace;
-      font-size: 0.85rem; letter-spacing: 0.1em; text-transform: uppercase;
-      color: var(--ink); background: none; text-decoration: none; white-space: nowrap; font-weight: 500;
-      flex: 1; text-align: center; margin: 0 1.25rem;
+      font-size: 0.85rem; letter-spacing: 0.12em; text-transform: uppercase;
+      color: var(--accent); cursor: pointer; transition: border-color 0.15s, background 0.15s;
+    }
+    .month-today-btn:hover { border-color: var(--accent); background: rgba(192,57,43,0.05); }
+    .view-cal-btn {
+      display: inline-flex; align-items: center; justify-content: center;
+      font-family: 'DM Mono', monospace;
+      font-size: 0.68rem; letter-spacing: 0.5em; text-transform: uppercase;
+      color: var(--accent); border: 1px solid var(--accent); border-radius: 4px;
+      padding: 0.45rem 1.2rem; text-decoration: none;
       transition: background 0.15s;
     }
-    .monthly-view-btn:hover { background: rgba(192,57,43,0.06); }
+    .month-toolbar .view-cal-btn {
+      flex: 1; margin-left: 1.25rem;
+    }
+    .view-cal-btn:hover { background: rgba(192,57,43,0.06); }
 
-    .cal-view-wrap {
+    /* ── Content layout ── */
+    .content {
+      width: 90%;
+      margin: 2rem auto 0;
       display: flex;
-      align-items: center;
-      gap: 0.5rem;
-      font-family: 'DM Mono', monospace;
-      font-size: 0.85rem;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      color: var(--muted);
+      gap: 0;
     }
-    .cal-view-select {
-      border: 1px solid var(--rule);
-      border-radius: 4px;
-      background: var(--paper);
-      font-family: 'DM Mono', monospace;
-      font-size: 0.85rem;
-      letter-spacing: 0.08em;
-      color: var(--ink);
-      padding: 0.3rem 0.6rem;
-      cursor: pointer;
-    }
-
-    /* ── Calendar grid ── */
-    .cal-grid {
-      border: 1px solid var(--rule);
-      border-radius: 2px;
-      overflow: visible;
-    }
-
-    /* Day-of-week headers */
-    .cal-header-row {
-      display: grid;
-      grid-template-columns: repeat(7, 1fr);
-      background: var(--paper);
-      border-bottom: 2px solid var(--ink);
-    }
-    .cal-header-cell {
-      font-family: 'DM Mono', monospace;
-      font-size: 0.6rem;
-      letter-spacing: 0.2em;
-      text-transform: uppercase;
-      color: var(--muted);
-      padding: 0.6rem 0;
-      text-align: center;
-    }
-    .cal-header-cell.is-friday { color: var(--accent); }
-
-    /* Weeks */
-    .cal-weeks { display: flex; flex-direction: column; }
-    .cal-week {
-      display: grid;
-      grid-template-columns: repeat(7, 1fr);
-      border-bottom: 1px solid var(--rule);
-    }
-    .cal-week:last-child { border-bottom: none; }
-
-    /* Day cells */
-    .cal-day {
-      min-height: 150px;
-      padding: 0.75rem 0.7rem 0.75rem;
-      border-right: 1px solid var(--rule);
-      position: relative;
-      background: var(--paper);
-    }
-    .cal-day:last-child { border-right: none; }
-    .cal-day.other-month { background: #eeeae0; }
-    .cal-day.other-month .cal-day-num { color: var(--rule); }
-
-    .cal-day-num {
-      font-family: 'DM Mono', monospace;
-      font-size: 0.8rem;
-      color: var(--ink);
-      display: block;
-      margin-bottom: 0.5rem;
-    }
-
-    /* Today highlight */
-    .cal-day.is-today .cal-day-num {
-      color: var(--accent);
-      font-weight: 500;
-      border-bottom: 2px solid var(--accent);
-      display: block;
-      width: fit-content;
-      padding-bottom: 1px;
-    }
-
-
-    /* ── Week bar (spans full week width) ── */
-    .week-bar {
-      display: flex; align-items: center; justify-content: center;
-      width: 100%; padding: 0.4rem 1rem;
-      font-family: 'DM Mono', monospace; font-size: 0.68rem;
-      letter-spacing: 0.12em; text-transform: uppercase;
-      color: var(--accent); text-decoration: none;
-      background: rgba(192,57,43,0.03); border-bottom: 1px solid rgba(0,0,0,0.4);
-      transition: background 0.15s;
-    }
-    .week-bar:hover { background: rgba(192,57,43,0.08); }
-    .week-bar-draft { color: var(--muted); background: transparent; border-bottom: 1px solid rgba(0,0,0,0.4); }
-    .week-bar-draft:hover { background: rgba(0,0,0,0.02); }
+    .left-gutter { width: 160px; flex-shrink: 0; position: relative; }
 
     /* ── Filter panel ── */
-    .cal-main-wrap { display: flex; align-items: flex-start; gap: 1.25rem; }
-    .filter-panel { flex-shrink: 0; width: 155px; position: sticky; top: 1rem; }
+    .filter-panel { width: 155px; position: sticky; top: 1rem; }
     .filter-toggle {
       width: 100%; background: none; border: 1px solid var(--rule); border-radius: 4px;
       padding: 0.5rem 0.8rem; font-family: 'DM Mono', monospace; font-size: 0.68rem;
@@ -239,28 +122,166 @@
       background: none; border: none; border-top: 1px solid var(--rule);
       padding: 0.45rem 0.8rem; font-family: 'DM Mono', monospace; font-size: 0.6rem;
       letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted);
-      cursor: pointer; text-align: center; width: 100%;
-      transition: color 0.12s;
+      cursor: pointer; text-align: center; width: 100%; transition: color 0.12s;
     }
     .filter-clear:hover { color: var(--ink); }
 
-    /* ── Marker filter states ── */
-    .marker-dim { opacity: 0.12; pointer-events: none; }
-    .marker-active { font-weight: 700; }
+    /* ── Card filter states ── */
+    .card-dim { opacity: 0.12; pointer-events: none; }
+    .card-active { font-weight: 700; }
+    .weeks-container { flex: 1; min-width: 0; }
 
-    /* ── Story markers ── */
-    .story-marker {
-      display: -webkit-box; margin-top: 0.5rem;
-      font-family: 'DM Sans', sans-serif; font-weight: 500;
-      line-height: 1.3; color: var(--ink); text-decoration: none;
-      background: transparent; border-left: 2px solid var(--accent);
-      padding: 0.2rem 0.3rem; border-radius: 0 2px 2px 0;
-      transition: background 0.15s, color 0.15s;
-      overflow: hidden; -webkit-line-clamp: 2; line-clamp: 2; -webkit-box-orient: vertical;
+    /* ── Week section ── */
+    .week-section {
+      display: flex;
+      align-items: stretch;
+      margin-bottom: 3.5rem;
     }
-    .story-marker-solo  { font-size: 0.8rem; }
-    .story-marker-multi { font-size: 0.8rem; }
-    .story-marker:hover { background: rgba(192,57,43,0.06); color: var(--accent); }
+    .week-section:last-child { margin-bottom: 1.5rem; }
+    .week-content { flex: 1; min-width: 0; }
+
+    /* ── Week bracket ── */
+    .week-bracket {
+      flex-shrink: 0;
+      display: flex;
+      flex-direction: row;
+      align-items: stretch;
+      margin-left: 1.5rem;
+    }
+    .bracket-shape {
+      width: 0.9rem;
+      border-right: 1.5px solid var(--ink);
+      border-top: 1.5px solid var(--ink);
+      border-bottom: 1.5px solid var(--ink);
+    }
+    .week-label {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.72rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--accent);
+      writing-mode: vertical-lr;
+      padding: 0.6rem 0.45rem;
+      margin-left: 0.55rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-decoration: none;
+      border: 1px solid var(--accent);
+      border-radius: 4px;
+      transition: background 0.15s;
+    }
+    .week-label:hover { background: rgba(192,57,43,0.06); }
+
+    /* ── Row of 3 ── */
+    .row-three {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.25rem;
+      margin-bottom: 1.25rem;
+    }
+
+    /* ── Row of 2 ── */
+    .row-two {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1.25rem;
+    }
+
+    /* ── Card (3-col) ── */
+    .article-card {
+      border: 1px solid var(--rule);
+      border-radius: 3px;
+      padding: 1.1rem 1.2rem;
+      display: flex;
+      flex-direction: column;
+      text-decoration: none;
+      color: inherit;
+      transition: border-color 0.15s;
+    }
+    .article-card:hover { border-color: var(--ink); }
+
+    /* ── Wide card (2-col with image) ── */
+    .article-card-wide {
+      display: flex;
+      flex-direction: row;
+      gap: 1rem;
+      border: 1px solid var(--rule);
+      border-radius: 3px;
+      padding: 1.1rem 1.2rem;
+      text-decoration: none;
+      color: inherit;
+      transition: border-color 0.15s;
+    }
+    .article-card-wide:hover { border-color: var(--ink); }
+
+    .card-img {
+      flex-shrink: 0;
+      width: 40%;
+      min-height: 140px;
+      background: #e8e3d8;
+      border-radius: 2px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .card-img::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: repeating-linear-gradient(-45deg, transparent, transparent 6px, rgba(255,255,255,0.15) 6px, rgba(255,255,255,0.15) 7px);
+    }
+    .card-img span { position: relative; color: rgba(122,112,96,0.35); font-size: 1.1rem; }
+
+    .card-body { flex: 1; display: flex; flex-direction: column; min-width: 0; }
+
+    /* ── Card inner ── */
+    .card-tag {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.58rem;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 0.35rem;
+    }
+    .card-headline {
+      font-family: 'Playfair Display', serif;
+      font-size: 1rem;
+      font-weight: 700;
+      line-height: 1.25;
+      color: var(--ink);
+      margin-bottom: 0.45rem;
+    }
+    .card-desc {
+      font-size: 0.8rem;
+      line-height: 1.6;
+      color: var(--muted);
+      font-weight: 300;
+      flex: 1;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+
+    /* ── Bottom bar ── */
+    .bottom-bar {
+      text-align: center;
+      padding: 2.5rem 0 3rem;
+    }
+
+    /* ── Empty / loading ── */
+    .empty-state {
+      text-align: center;
+      padding: 4rem 2rem;
+      font-family: 'DM Mono', monospace;
+      font-size: 0.7rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
 
     /* ── Footer ── */
     footer {
@@ -273,70 +294,82 @@
       text-transform: uppercase;
       border-top: 1px solid var(--rule);
     }
-
-    @media (max-width: 600px) {
-      .cal-day { min-height: 70px; padding: 0.4rem; }
-      .cal-month-label { font-size: 1.1rem; }
-      .cal-view-wrap { display: none; }
-      .friday-btn { width: 22px; height: 22px; }
-    }
   </style>
 </head>
 <body>
 
 <!-- ── Masthead ── -->
 <header class="masthead">
-  <div class="masthead-title" id="cal-month-title">March 2026</div>
+  <div class="masthead-eyebrow">Curated Intelligence</div>
+  <div class="masthead-title">AI Weekly <span>Signal</span></div>
+  <div class="masthead-desc">Welcome to your <strong>weekly news page on AI</strong> in the 5 largest industries</div>
 </header>
 
-<!-- ── Calendar ── -->
-<div class="cal-wrap">
-
-  <div class="cal-toolbar">
-    <!-- Left: nav -->
-    <div class="cal-nav">
-      <button class="cal-nav-btn" id="prev-btn" aria-label="Previous month">&#8249;</button>
-      <button class="cal-nav-btn" id="next-btn" aria-label="Next month">&#8250;</button>
-      <button class="cal-today-btn" id="today-btn">Today</button>
-    </div>
-    <a class="monthly-view-btn" id="monthly-view-btn" href="MonthlyPage.html?month=2026-03">Monthly view</a>
-    <!-- Right: view selector -->
-    <div class="cal-view-wrap">
-      View by
-      <select class="cal-view-select">
-        <option>Month</option>
-      </select>
-    </div>
+<!-- ── Month toolbar ── -->
+<div class="month-toolbar">
+  <div class="month-nav">
+    <button class="month-nav-btn" id="prev-btn">&#8249;</button>
+    <button class="month-nav-btn" id="next-btn">&#8250;</button>
+    <span class="month-label" id="month-label"></span>
+    <button class="month-today-btn" id="today-btn">Today</button>
   </div>
+  <a class="view-cal-btn" id="top-cal-btn" href="CalendarPage.html">View month as calendar</a>
+</div>
 
-  <div class="cal-main-wrap">
+<!-- ── Weeks ── -->
+<main class="content">
+  <div class="left-gutter">
     <div class="filter-panel" id="filter-panel">
       <button class="filter-toggle" id="filter-toggle">Sectors <span id="filter-arrow">▾</span></button>
       <div class="filter-dropdown" id="filter-dropdown"></div>
     </div>
-    <div class="cal-grid" style="flex:1">
-      <div class="cal-header-row">
-        <div class="cal-header-cell">Sun</div>
-        <div class="cal-header-cell">Mon</div>
-        <div class="cal-header-cell">Tue</div>
-        <div class="cal-header-cell">Wed</div>
-        <div class="cal-header-cell">Thu</div>
-        <div class="cal-header-cell is-friday">Fri</div>
-        <div class="cal-header-cell">Sat</div>
-      </div>
-      <div class="cal-weeks" id="cal-weeks"></div>
-    </div>
   </div>
+  <div class="weeks-container" id="weeks-container">
+    <div class="empty-state" id="loading">Loading…</div>
+  </div>
+</main>
 
+<!-- ── Bottom bar ── -->
+<div class="bottom-bar">
+  <a class="view-cal-btn" id="bottom-cal-btn" href="CalendarPage.html">View month as calendar</a>
 </div>
 
 <footer>AI Weekly Signal &nbsp;◆&nbsp; Created by Matteo Di Rito with Claude on AI</footer>
 
 <script>
-  let EDITIONS = {};         // weekly:  "YYYY-MM-DD" → filled count (0–5)
-  let STORY_MARKERS = {};    // "YYYY-MM-DD" → [{headline, url, tag}]
-  let ALL_TAGS = [];         // ordered list of unique sector tags
-  let activeFilter = null;
+  const MONTH_NAMES = ['January','February','March','April','May','June',
+                       'July','August','September','October','November','December'];
+
+  const todayDate = new Date();
+  const params    = new URLSearchParams(location.search);
+  const monthParam = params.get('month') || '';
+  const [yearStr, monthStr] = monthParam.split('-');
+  let viewYear  = parseInt(yearStr)  || todayDate.getFullYear();
+  let viewMonth = (parseInt(monthStr) || todayDate.getMonth() + 1) - 1; // 0-based
+
+  function updateView() {
+    const monthName = MONTH_NAMES[viewMonth];
+    document.getElementById('month-label').textContent = `${monthName} ${viewYear}`;
+    document.title = `AI Weekly Signal — ${monthName} ${viewYear}`;
+    const mm = String(viewMonth + 1).padStart(2, '0');
+    const calUrl = `CalendarPage.html?month=${viewYear}-${mm}`;
+    document.getElementById('top-cal-btn').href = calUrl;
+    document.getElementById('bottom-cal-btn').href = calUrl;
+    loadAndRender();
+  }
+
+  document.getElementById('prev-btn').addEventListener('click', () => {
+    viewMonth--; if (viewMonth < 0) { viewMonth = 11; viewYear--; }
+    updateView();
+  });
+  document.getElementById('next-btn').addEventListener('click', () => {
+    viewMonth++; if (viewMonth > 11) { viewMonth = 0; viewYear++; }
+    updateView();
+  });
+  document.getElementById('today-btn').addEventListener('click', () => {
+    viewYear = todayDate.getFullYear(); viewMonth = todayDate.getMonth();
+    updateView();
+  });
 
   function getWeekNumber(d) {
     const date = new Date(Date.UTC(d.getFullYear(), d.getMonth(), d.getDate()));
@@ -346,137 +379,107 @@
     return Math.ceil((((date - yearStart) / 86400000) + 1) / 7);
   }
 
+  function articleUrl(edDate, idx, type) {
+    return `ReaderPage.html?date=${edDate}&idx=${idx}${type === 'monthly' ? '&type=monthly' : ''}`;
+  }
+
+  function makeCard(story, edDate, idx, type) {
+    const card = document.createElement('a');
+    card.className = 'article-card';
+    card.href = articleUrl(edDate, idx, type);
+    card.dataset.tag = story.tag || '';
+    const tag  = document.createElement('div');  tag.className  = 'card-tag';      tag.textContent = story.tag || '';
+    const head = document.createElement('div');  head.className = 'card-headline'; head.textContent = story.headline || '';
+    const desc = document.createElement('p');    desc.className = 'card-desc';     desc.textContent = story.desc || '';
+    card.append(tag, head, desc);
+    return card;
+  }
+
+  function makeWideCard(story, edDate, idx, type) {
+    const card = document.createElement('a');
+    card.className = 'article-card-wide';
+    card.href = articleUrl(edDate, idx, type);
+    card.dataset.tag = story.tag || '';
+
+    const img = document.createElement('div');
+    img.className = 'card-img';
+    img.innerHTML = '<span>◆</span>';
+
+    const body = document.createElement('div');
+    body.className = 'card-body';
+    const tag  = document.createElement('div');  tag.className  = 'card-tag';      tag.textContent = story.tag || '';
+    const head = document.createElement('div');  head.className = 'card-headline'; head.textContent = story.headline || '';
+    const desc = document.createElement('p');    desc.className = 'card-desc';     desc.textContent = story.desc || '';
+    body.append(tag, head, desc);
+
+    card.append(img, body);
+    return card;
+  }
+
+  function renderWeek(edition) {
+    const news  = edition.news || [];
+    const edDate = edition.date;
+    const type  = edition.type || 'weekly';
+    const weekNum = getWeekNumber(new Date(edDate));
+
+    const section = document.createElement('div');
+    section.className = 'week-section';
+
+    const content = document.createElement('div');
+    content.className = 'week-content';
+
+    // Row of 3 (stories 0–2)
+    const stories03 = [0,1,2].filter(i => news[i]);
+    if (stories03.length) {
+      const row = document.createElement('div');
+      row.className = 'row-three';
+      stories03.forEach(i => row.appendChild(makeCard(news[i], edDate, i, type)));
+      content.appendChild(row);
+    }
+
+    // Row of 2 (stories 3–4) with image placeholder
+    const stories45 = [3,4].filter(i => news[i]);
+    if (stories45.length) {
+      const row = document.createElement('div');
+      row.className = 'row-two';
+      stories45.forEach(i => row.appendChild(makeWideCard(news[i], edDate, i, type)));
+      content.appendChild(row);
+    }
+
+    section.appendChild(content);
+
+    // Bracket ] with label outside to the right
+    const bracket = document.createElement('div');
+    bracket.className = 'week-bracket';
+    const shape = document.createElement('div');
+    shape.className = 'bracket-shape';
+    const label = document.createElement('a');
+    label.className = 'week-label';
+    label.textContent = `Week ${weekNum}`;
+    label.href = `WeeklyPage.html?date=${edDate}${type === 'monthly' ? '&type=monthly' : ''}`;
+    bracket.append(shape, label);
+    section.appendChild(bracket);
+
+    return section;
+  }
+
+  let activeFilter = null;
+  const EXCLUDED_TAGS = new Set(['Models', 'Research', 'Industry', 'Policy', 'Tools']);
+
   function shortTag(tag) {
     return tag.replace(/^AI\s+in\s+/i, '').replace(/^AI\s*\+\s*/i, '').trim();
   }
 
   function applyFilter(tag) {
     activeFilter = activeFilter === tag ? null : tag;
-    document.querySelectorAll('.story-marker').forEach(el => {
-      if (!activeFilter) { el.classList.remove('marker-dim', 'marker-active'); }
-      else if (el.dataset.tag === activeFilter) { el.classList.remove('marker-dim'); el.classList.add('marker-active'); }
-      else { el.classList.remove('marker-active'); el.classList.add('marker-dim'); }
+    document.querySelectorAll('.article-card, .article-card-wide').forEach(el => {
+      if (!activeFilter) { el.classList.remove('card-dim', 'card-active'); }
+      else if (el.dataset.tag === activeFilter) { el.classList.remove('card-dim'); el.classList.add('card-active'); }
+      else { el.classList.remove('card-active'); el.classList.add('card-dim'); }
     });
     document.querySelectorAll('.filter-item').forEach(btn => {
       btn.classList.toggle('active', btn.dataset.tag === activeFilter);
     });
-  }
-
-  const EDIT_MODE = location.hostname === 'localhost' || location.hostname === '127.0.0.1';
-
-  const today = new Date();
-  today.setHours(0, 0, 0, 0);
-
-  // Compute the next 2 upcoming Fridays (for edit-mode draft buttons)
-  function nextNFridays(n) {
-    const fridays = [];
-    const d = new Date(today);
-    // start from tomorrow so today counts as "upcoming" only if it's Friday
-    if (d.getDay() !== 5) d.setDate(d.getDate() + ((5 - d.getDay() + 7) % 7));
-    else d.setDate(d.getDate()); // today is Friday, include it
-    for (let i = 0; i < n; i++) {
-      fridays.push(editionKey(d));
-      d.setDate(d.getDate() + 7);
-    }
-    return new Set(fridays);
-  }
-
-  const calParams = new URLSearchParams(location.search);
-  const calMonthParam = calParams.get('month') || '';
-  const [calYearStr, calMonthStr] = calMonthParam.split('-');
-  let viewYear  = parseInt(calYearStr)  || today.getFullYear();
-  let viewMonth = calMonthParam ? (parseInt(calMonthStr) - 1) : today.getMonth();
-
-  // Convert EDITIONS keys to comparable timestamps
-  function editionKey(date) {
-    const y = date.getFullYear();
-    const m = String(date.getMonth() + 1).padStart(2, '0');
-    const d = String(date.getDate()).padStart(2, '0');
-    return `${y}-${m}-${d}`;
-  }
-
-  function buildCalendar(year, month) {
-    const label = new Date(year, month, 1)
-      .toLocaleDateString('en-US', { month: 'long', year: 'numeric' });
-    const weeksEl = document.getElementById('cal-weeks');
-    weeksEl.innerHTML = '';
-
-    const firstDay    = new Date(year, month, 1).getDay();
-    const daysInMonth = new Date(year, month + 1, 0).getDate();
-    const daysInPrev  = new Date(year, month, 0).getDate();
-
-    const cells = [];
-
-    for (let d = firstDay - 1; d >= 0; d--) {
-      cells.push({ day: daysInPrev - d, thisMonth: false,
-        year: month === 0 ? year - 1 : year,
-        month: month === 0 ? 11 : month - 1 });
-    }
-    for (let d = 1; d <= daysInMonth; d++) {
-      cells.push({ day: d, thisMonth: true, year, month });
-    }
-    const remaining = (7 - (cells.length % 7)) % 7;
-    for (let d = 1; d <= remaining; d++) {
-      cells.push({ day: d, thisMonth: false,
-        year: month === 11 ? year + 1 : year,
-        month: month === 11 ? 0 : month + 1 });
-    }
-
-    for (let w = 0; w < cells.length / 7; w++) {
-      const weekWrap = document.createElement('div');
-      weekWrap.className = 'cal-week-wrap';
-
-      // Week bar spanning full width — shown above the week if there's an edition (or upcoming in edit mode)
-      const fridayCell = cells[w * 7 + 5];
-      const fridayDate = new Date(fridayCell.year, fridayCell.month, fridayCell.day);
-      fridayDate.setHours(0, 0, 0, 0);
-      const fridayKey = editionKey(fridayDate);
-      const upcomingFridays = EDIT_MODE ? nextNFridays(2) : new Set();
-      const showBar = EDITIONS.hasOwnProperty(fridayKey) || upcomingFridays.has(fridayKey);
-      const weekEl = document.createElement('div');
-      weekEl.className = 'cal-week';
-
-      for (let c = 0; c < 7; c++) {
-        const cell = cells[w * 7 + c];
-        const date = new Date(cell.year, cell.month, cell.day);
-        date.setHours(0, 0, 0, 0);
-
-        const dayEl = document.createElement('div');
-        dayEl.className = 'cal-day';
-        if (!cell.thisMonth) dayEl.classList.add('other-month');
-        if (date.getTime() === today.getTime()) dayEl.classList.add('is-today');
-
-        const numEl = document.createElement('span');
-        numEl.className = 'cal-day-num';
-        numEl.textContent = cell.day;
-        dayEl.appendChild(numEl);
-
-        // Story markers for this day
-        const markers = STORY_MARKERS[editionKey(date)] || [];
-        markers.forEach(m => {
-          const a = document.createElement('a');
-          a.className = 'story-marker' + (markers.length === 1 ? ' story-marker-solo' : ' story-marker-multi');
-          if (activeFilter) a.classList.add(m.tag === activeFilter ? 'marker-active' : 'marker-dim');
-          a.href = m.url;
-          a.textContent = m.headline;
-          a.title = m.headline;
-          a.dataset.tag = m.tag || '';
-          dayEl.appendChild(a);
-        });
-
-
-        weekEl.appendChild(dayEl);
-      }
-      weekWrap.appendChild(weekEl);
-      if (showBar) {
-        const wb = document.createElement('a');
-        wb.className = 'week-bar' + (!EDITIONS.hasOwnProperty(fridayKey) ? ' week-bar-draft' : '');
-        wb.href = `WeeklyPage.html?date=${fridayKey}`;
-        wb.textContent = `See the entire week ${getWeekNumber(fridayDate)} →`;
-        weekWrap.appendChild(wb);
-      }
-      weeksEl.appendChild(weekWrap);
-    }
   }
 
   document.getElementById('filter-toggle').addEventListener('click', () => {
@@ -486,74 +489,57 @@
     arrow.textContent = open ? '▴' : '▾';
   });
 
-  const MONTH_NAMES = ['January','February','March','April','May','June',
-                       'July','August','September','October','November','December'];
-  function updateMonthlyBtn() {
-    const btn = document.getElementById('monthly-view-btn');
-    const mm  = String(viewMonth + 1).padStart(2, '0');
-    btn.href = `MonthlyPage.html?month=${viewYear}-${mm}`;
-    btn.textContent = 'Monthly view';
-    document.getElementById('cal-month-title').textContent = `${MONTH_NAMES[viewMonth]} ${viewYear}`;
-  }
+  let allEditionsCache = null;
 
-  document.getElementById('prev-btn').addEventListener('click', () => {
-    viewMonth--;
-    if (viewMonth < 0) { viewMonth = 11; viewYear--; }
-    buildCalendar(viewYear, viewMonth);
-    updateMonthlyBtn();
-  });
-  document.getElementById('next-btn').addEventListener('click', () => {
-    viewMonth++;
-    if (viewMonth > 11) { viewMonth = 0; viewYear++; }
-    buildCalendar(viewYear, viewMonth);
-    updateMonthlyBtn();
-  });
-  document.getElementById('today-btn').addEventListener('click', () => {
-    viewYear  = today.getFullYear();
-    viewMonth = today.getMonth();
-    buildCalendar(viewYear, viewMonth);
-    updateMonthlyBtn();
-  });
-  updateMonthlyBtn();
+  function loadAndRender() {
+    const monthName = MONTH_NAMES[viewMonth];
+    const container = document.getElementById('weeks-container');
+    container.innerHTML = '<div class="empty-state">Loading…</div>';
 
-  // Load editions.json and then render the calendar
-  fetch('./editions.json')
-    .then(r => r.json())
-    .then(all => {
-      const tagSet = new Set();
-      all.forEach(e => {
-        const count = typeof e.filled === 'number' ? e.filled : 0;
-        if (e.type !== 'monthly') EDITIONS[e.date] = count;
-        (e.news || []).forEach((story, idx) => {
-          if (story.tag) tagSet.add(story.tag);
-          if (!story.news_date) return;
-          if (!STORY_MARKERS[story.news_date]) STORY_MARKERS[story.news_date] = [];
-          const params = `date=${e.date}&idx=${idx}${e.type === 'monthly' ? '&type=monthly' : ''}`;
-          STORY_MARKERS[story.news_date].push({ headline: story.short_title || story.headline, url: `ReaderPage.html?${params}`, tag: story.tag || '' });
-        });
-      });
-      const EXCLUDED_TAGS = new Set(['Models', 'Research', 'Industry', 'Policy', 'Tools']);
-      ALL_TAGS = [...tagSet].filter(t => !EXCLUDED_TAGS.has(t));
-      // Populate filter dropdown
+    const doRender = (all) => {
+      const prefix = `${viewYear}-${String(viewMonth + 1).padStart(2,'0')}`;
+      const editions = all
+        .filter(e => e.date && e.date.startsWith(prefix) && e.type !== 'monthly')
+        .sort((a, b) => a.date.localeCompare(b.date));
+
+      container.innerHTML = '';
+
+      // Rebuild filter dropdown
       const dd = document.getElementById('filter-dropdown');
-      ALL_TAGS.forEach(tag => {
+      dd.innerHTML = '';
+      activeFilter = null;
+      const tagSet = new Set();
+      editions.forEach(e => (e.news || []).forEach(s => { if (s.tag) tagSet.add(s.tag); }));
+      const tags = [...tagSet].filter(t => !EXCLUDED_TAGS.has(t));
+      tags.forEach(tag => {
         const btn = document.createElement('button');
-        btn.className = 'filter-item';
-        btn.dataset.tag = tag;
+        btn.className = 'filter-item'; btn.dataset.tag = tag;
         btn.textContent = shortTag(tag);
-        btn.addEventListener('click', () => { applyFilter(tag); });
+        btn.addEventListener('click', () => applyFilter(tag));
         dd.appendChild(btn);
       });
-      if (ALL_TAGS.length > 0) {
+      if (tags.length) {
         const clr = document.createElement('button');
-        clr.className = 'filter-clear';
-        clr.textContent = 'Clear filter';
-        clr.addEventListener('click', () => { applyFilter(null); activeFilter = null; document.querySelectorAll('.filter-item').forEach(b => b.classList.remove('active')); document.querySelectorAll('.story-marker').forEach(el => el.classList.remove('marker-dim','marker-active')); });
+        clr.className = 'filter-clear'; clr.textContent = 'Clear filter';
+        clr.addEventListener('click', () => { applyFilter(null); activeFilter = null; document.querySelectorAll('.filter-item').forEach(b => b.classList.remove('active')); document.querySelectorAll('.article-card, .article-card-wide').forEach(el => el.classList.remove('card-dim','card-active')); });
         dd.appendChild(clr);
       }
-      buildCalendar(viewYear, viewMonth);
-    })
-    .catch(() => buildCalendar(viewYear, viewMonth)); // render anyway if file missing
+
+      if (!editions.length) {
+        container.innerHTML = `<div class="empty-state">No editions found for ${monthName} ${viewYear}</div>`;
+        return;
+      }
+      editions.forEach(e => container.appendChild(renderWeek(e)));
+    };
+
+    if (allEditionsCache) { doRender(allEditionsCache); return; }
+    fetch('./editions.json')
+      .then(r => r.json())
+      .then(all => { allEditionsCache = all; doRender(all); })
+      .catch(() => { container.innerHTML = `<div class="empty-state">Could not load editions</div>`; });
+  }
+
+  updateView();
 </script>
 
 </body>
