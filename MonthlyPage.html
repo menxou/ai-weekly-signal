@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>AI Weekly Signal — Monthly View</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Mono:wght@400;500&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --ink: #0e0e0e;
+      --paper: #f7f4ee;
+      --accent: #c0392b;
+      --muted: #7a7060;
+      --rule: #d4cfc5;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background: var(--paper);
+      color: var(--ink);
+      font-family: 'DM Sans', sans-serif;
+      min-height: 100vh;
+    }
+
+    /* ── Top bar ── */
+    .top-bar {
+      display: flex;
+      align-items: center;
+      padding: 0.75rem 2.5rem;
+      border-bottom: 1px solid var(--rule);
+    }
+    .back-btn {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.85rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--muted);
+      text-decoration: none;
+      transition: color 0.15s;
+    }
+    .back-btn:hover { color: var(--ink); }
+
+    /* ── Masthead ── */
+    .masthead {
+      text-align: center;
+      padding: 2rem 0 1.5rem;
+    }
+    .view-cal-btn {
+      display: inline-block;
+      font-family: 'DM Mono', monospace;
+      font-size: 0.68rem;
+      letter-spacing: 0.5em;
+      text-transform: uppercase;
+      color: var(--accent);
+      border: 1px solid var(--accent);
+      border-radius: 4px;
+      padding: 0.45rem 1.2rem;
+      text-decoration: none;
+      margin-bottom: 1rem;
+      transition: background 0.15s;
+    }
+    .view-cal-btn:hover { background: rgba(192,57,43,0.06); }
+    .month-title {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(2rem, 5vw, 4rem);
+      font-weight: 900;
+      letter-spacing: -0.02em;
+      color: var(--ink);
+    }
+
+    /* ── Content layout ── */
+    .content {
+      width: 90%;
+      margin: 2rem auto 0;
+      display: flex;
+      gap: 0;
+    }
+    .left-gutter { width: 160px; flex-shrink: 0; }
+    .weeks-container { flex: 1; min-width: 0; }
+
+    /* ── Week section ── */
+    .week-section {
+      display: flex;
+      align-items: stretch;
+      margin-bottom: 3.5rem;
+    }
+    .week-section:last-child { margin-bottom: 1.5rem; }
+    .week-content { flex: 1; min-width: 0; }
+
+    /* ── Week bracket ── */
+    .week-bracket {
+      flex-shrink: 0;
+      display: flex;
+      flex-direction: row;
+      align-items: stretch;
+      margin-left: 1.5rem;
+    }
+    .bracket-shape {
+      width: 0.9rem;
+      border-right: 1.5px solid var(--ink);
+      border-top: 1.5px solid var(--ink);
+      border-bottom: 1.5px solid var(--ink);
+    }
+    .week-label {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.72rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--muted);
+      writing-mode: vertical-lr;
+      padding-left: 0.55rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* ── Row of 3 ── */
+    .row-three {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.25rem;
+      margin-bottom: 1.25rem;
+    }
+
+    /* ── Row of 2 ── */
+    .row-two {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1.25rem;
+    }
+
+    /* ── Card (3-col) ── */
+    .article-card {
+      border: 1px solid var(--rule);
+      border-radius: 3px;
+      padding: 1.1rem 1.2rem;
+      display: flex;
+      flex-direction: column;
+      text-decoration: none;
+      color: inherit;
+      transition: border-color 0.15s;
+    }
+    .article-card:hover { border-color: var(--ink); }
+
+    /* ── Wide card (2-col with image) ── */
+    .article-card-wide {
+      display: flex;
+      flex-direction: row;
+      gap: 1rem;
+      border: 1px solid var(--rule);
+      border-radius: 3px;
+      padding: 1.1rem 1.2rem;
+      text-decoration: none;
+      color: inherit;
+      transition: border-color 0.15s;
+    }
+    .article-card-wide:hover { border-color: var(--ink); }
+
+    .card-img {
+      flex-shrink: 0;
+      width: 40%;
+      min-height: 140px;
+      background: #e8e3d8;
+      border-radius: 2px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .card-img::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: repeating-linear-gradient(-45deg, transparent, transparent 6px, rgba(255,255,255,0.15) 6px, rgba(255,255,255,0.15) 7px);
+    }
+    .card-img span { position: relative; color: rgba(122,112,96,0.35); font-size: 1.1rem; }
+
+    .card-body { flex: 1; display: flex; flex-direction: column; min-width: 0; }
+
+    /* ── Card inner ── */
+    .card-tag {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.58rem;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 0.35rem;
+    }
+    .card-headline {
+      font-family: 'Playfair Display', serif;
+      font-size: 1rem;
+      font-weight: 700;
+      line-height: 1.25;
+      color: var(--ink);
+      margin-bottom: 0.45rem;
+    }
+    .card-desc {
+      font-size: 0.8rem;
+      line-height: 1.6;
+      color: var(--muted);
+      font-weight: 300;
+      flex: 1;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+
+    /* ── Bottom bar ── */
+    .bottom-bar {
+      text-align: center;
+      padding: 2.5rem 0 3rem;
+    }
+
+    /* ── Empty / loading ── */
+    .empty-state {
+      text-align: center;
+      padding: 4rem 2rem;
+      font-family: 'DM Mono', monospace;
+      font-size: 0.7rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    /* ── Footer ── */
+    footer {
+      text-align: center;
+      padding: 2rem;
+      font-family: 'DM Mono', monospace;
+      font-size: 0.6rem;
+      letter-spacing: 0.15em;
+      color: var(--rule);
+      text-transform: uppercase;
+      border-top: 1px solid var(--rule);
+    }
+  </style>
+</head>
+<body>
+
+<!-- ── Top bar ── -->
+<div class="top-bar">
+  <a class="back-btn" href="LandingPage.html">&#8592; Calendar</a>
+</div>
+
+<!-- ── Masthead ── -->
+<header class="masthead">
+  <a class="view-cal-btn" id="top-cal-btn" href="LandingPage.html">View month as calendar</a>
+  <div class="month-title" id="month-title"></div>
+</header>
+
+<!-- ── Weeks ── -->
+<main class="content">
+  <div class="left-gutter"></div>
+  <div class="weeks-container" id="weeks-container">
+    <div class="empty-state" id="loading">Loading…</div>
+  </div>
+</main>
+
+<!-- ── Bottom bar ── -->
+<div class="bottom-bar">
+  <a class="view-cal-btn" href="LandingPage.html">View month as calendar</a>
+</div>
+
+<footer>AI Weekly Signal &nbsp;◆&nbsp; Created by Matteo Di Rito with Claude on AI</footer>
+
+<script>
+  const MONTH_NAMES = ['January','February','March','April','May','June',
+                       'July','August','September','October','November','December'];
+
+  const params    = new URLSearchParams(location.search);
+  const monthParam = params.get('month') || '';
+  const [yearStr, monthStr] = monthParam.split('-');
+  const year  = parseInt(yearStr)  || new Date().getFullYear();
+  const month = parseInt(monthStr) || new Date().getMonth() + 1;
+  const monthName = MONTH_NAMES[month - 1] || '';
+
+  document.getElementById('month-title').textContent = `${monthName} ${year}`;
+  document.title = `AI Weekly Signal — ${monthName} ${year}`;
+
+  function getWeekNumber(d) {
+    const date = new Date(Date.UTC(d.getFullYear(), d.getMonth(), d.getDate()));
+    const day = date.getUTCDay() || 7;
+    date.setUTCDate(date.getUTCDate() + 4 - day);
+    const yearStart = new Date(Date.UTC(date.getUTCFullYear(), 0, 1));
+    return Math.ceil((((date - yearStart) / 86400000) + 1) / 7);
+  }
+
+  function articleUrl(edDate, idx, type) {
+    return `ArticlePage.html?date=${edDate}&idx=${idx}${type === 'monthly' ? '&type=monthly' : ''}`;
+  }
+
+  function makeCard(story, edDate, idx, type) {
+    const card = document.createElement('a');
+    card.className = 'article-card';
+    card.href = articleUrl(edDate, idx, type);
+    const tag  = document.createElement('div');  tag.className  = 'card-tag';      tag.textContent = story.tag || '';
+    const head = document.createElement('div');  head.className = 'card-headline'; head.textContent = story.headline || '';
+    const desc = document.createElement('p');    desc.className = 'card-desc';     desc.textContent = story.desc || '';
+    card.append(tag, head, desc);
+    return card;
+  }
+
+  function makeWideCard(story, edDate, idx, type) {
+    const card = document.createElement('a');
+    card.className = 'article-card-wide';
+    card.href = articleUrl(edDate, idx, type);
+
+    const img = document.createElement('div');
+    img.className = 'card-img';
+    img.innerHTML = '<span>◆</span>';
+
+    const body = document.createElement('div');
+    body.className = 'card-body';
+    const tag  = document.createElement('div');  tag.className  = 'card-tag';      tag.textContent = story.tag || '';
+    const head = document.createElement('div');  head.className = 'card-headline'; head.textContent = story.headline || '';
+    const desc = document.createElement('p');    desc.className = 'card-desc';     desc.textContent = story.desc || '';
+    body.append(tag, head, desc);
+
+    card.append(img, body);
+    return card;
+  }
+
+  function renderWeek(edition) {
+    const news  = edition.news || [];
+    const edDate = edition.date;
+    const type  = edition.type || 'weekly';
+    const weekNum = getWeekNumber(new Date(edDate));
+
+    const section = document.createElement('div');
+    section.className = 'week-section';
+
+    const content = document.createElement('div');
+    content.className = 'week-content';
+
+    // Row of 3 (stories 0–2)
+    const stories03 = [0,1,2].filter(i => news[i]);
+    if (stories03.length) {
+      const row = document.createElement('div');
+      row.className = 'row-three';
+      stories03.forEach(i => row.appendChild(makeCard(news[i], edDate, i, type)));
+      content.appendChild(row);
+    }
+
+    // Row of 2 (stories 3–4) with image placeholder
+    const stories45 = [3,4].filter(i => news[i]);
+    if (stories45.length) {
+      const row = document.createElement('div');
+      row.className = 'row-two';
+      stories45.forEach(i => row.appendChild(makeWideCard(news[i], edDate, i, type)));
+      content.appendChild(row);
+    }
+
+    section.appendChild(content);
+
+    // Bracket ] with label outside to the right
+    const bracket = document.createElement('div');
+    bracket.className = 'week-bracket';
+    const shape = document.createElement('div');
+    shape.className = 'bracket-shape';
+    const label = document.createElement('span');
+    label.className = 'week-label';
+    label.textContent = `Week ${weekNum}`;
+    bracket.append(shape, label);
+    section.appendChild(bracket);
+
+    return section;
+  }
+
+  fetch('./editions.json')
+    .then(r => r.json())
+    .then(all => {
+      const prefix = `${year}-${String(month).padStart(2,'0')}`;
+      const editions = all
+        .filter(e => e.date && e.date.startsWith(prefix) && e.type !== 'monthly')
+        .sort((a, b) => a.date.localeCompare(b.date));
+
+      const container = document.getElementById('weeks-container');
+      container.innerHTML = '';
+
+      if (!editions.length) {
+        container.innerHTML = `<div class="empty-state">No editions found for ${monthName} ${year}</div>`;
+        return;
+      }
+      editions.forEach(e => container.appendChild(renderWeek(e)));
+    })
+    .catch(() => {
+      document.getElementById('weeks-container').innerHTML =
+        `<div class="empty-state">Could not load editions</div>`;
+    });
+</script>
+
+</body>
+</html>
